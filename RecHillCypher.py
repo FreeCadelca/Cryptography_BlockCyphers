@@ -9,19 +9,13 @@ class RecHillCypher:
         self.__key_1 = Matrix2x2(key_1)
         self.__key_2 = Matrix2x2(key_2)
 
-    def encrypt(self, x, key_1=None, key_2=None):
-        # print([[int(j) for j in i] for i in key_1.matrix])
-        # print([[int(j) for j in i] for i in key_2.matrix])
-        if not key_1:
-            key_1 = self.__key_1
-            print('1')
-        if not key_2:
-            key_2 = self.__key_2
-            print('2')
+    def encrypt(self, x):
+        key_1 = self.__key_1
+        key_2 = self.__key_2
         keys = [key_1, key_2]
         y = ''
         if len(x) % 2 != 0:
-            x += 'a' * (2 - len(x) % 2)
+            x += 'z' * (2 - len(x) % 2)
         for k in range(0, len(x), 2):
             block_x = x[k:k + 2]
             block_x_matrix = Matrix2x2([[IntMod(A_ID[i])] for i in block_x])
@@ -40,8 +34,6 @@ class RecHillCypher:
         return y
 
     def decrypt(self, y):
-        # print([[int(j) for j in i] for i in key_1.matrix])
-        # print([[int(j) for j in i] for i in key_2.matrix])
         keys = [self.__key_1, self.__key_2]
         x = ''
         if len(y) % 2 != 0:
