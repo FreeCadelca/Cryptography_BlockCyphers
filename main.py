@@ -3,6 +3,15 @@ from IntMod import IntMod
 from RecHillCypher import RecHillCypher
 
 
+def text_input():
+    text = ''
+    line = input()
+    while line != '':
+        text += line + '\n'
+        line = input()
+    return text
+
+
 # key = [[IntMod(2), IntMod(4), IntMod(1)],
 #        [IntMod(4), IntMod(1), IntMod(3)],
 #        [IntMod(7), IntMod(6), IntMod(4)]]
@@ -16,17 +25,6 @@ from RecHillCypher import RecHillCypher
 #
 # key2 = [[IntMod(1), IntMod(4)],
 #         [IntMod(2), IntMod(9)]]
-
-
-def text_input():
-    text = ''
-    line = input()
-    while line != '':
-        text += line + '\n'
-        line = input()
-    return text
-
-
 state = 'chooseCypher'
 cypher = None
 while True:
@@ -37,15 +35,13 @@ while True:
             print("Введите ключ для данного шифра в виде множества чисел в матрице размера 2х2. \n"
                   "Разделение между числами в одной строке матрицы - пробел,\n"
                   "разделение между строками одной матрицы - переход на новую строку.")
-
+            # ввод ключа от пользователя и преобразование его в нужный программе формат
             key = []
             for _ in range(2):
                 line = []
                 for i in input().split():
                     line.append(IntMod(int(i)))
                 key.append(line)
-            key = [[list(map(int, input().split()))] for _ in range(2)]
-
             cypher = HillCypher(key)
         elif cypher_name == '2':
             state = 'RecHill'
@@ -53,7 +49,7 @@ while True:
                   "Разделение между числами в одной строке матрицы - пробел,\n"
                   "разделение между строками одной матрицы - переход на новую строку,\n"
                   "разделение между двумя матрицами - переход на новую строку")
-
+            # ввод ключей от пользователя и преобразование их в нужный программе формат
             keys = []
             for _ in range(2):
                 key = []
@@ -63,17 +59,36 @@ while True:
                         line.append(IntMod(int(i)))
                     key.append(line)
                 keys.append(key)
-
             cypher = RecHillCypher(keys[0], keys[1])
     else:
-        mode = input("Введите операцию (E/D/Info - Encrypt/Decrypt/Get information about key(s) in the cypher)\n")
+        mode = input("Введите операцию (E/D/EText/DText/Info - Encrypt line/Decrypt line/Encrypt text/Decrypt text/Get information about key(s) in the cypher/)\n")
         if mode == "Info":
             cypher.info()
             continue
-        print("Введите текст для зашифрования/расшифрования\n"
-              "(Заглавные буквы автоматически заменятся на строчные, введите пустую строку для остановки ввода):")
-        text = text_input().lower()
-        if mode == "E":
-            print(cypher.encrypt(text))
+        print("Введите текст/слово для зашифрования/расшифрования\n"
+              "(Заглавные буквы автоматически заменятся на строчные)")
+        if mode == "EText":
+            print("(Введите пустую строку для того, чтобы закончить ввод)")
+            text = []
+            line = input().lower()
+            while line != '':
+                text.append(line)
+                line = input().lower()
+            out = [cypher.encrypt(i) for i in text]
+            for i in out:
+                print(i)
+        elif mode == "DText":
+            print("(Введите пустую строку для того, чтобы закончить ввод)")
+            text = []
+            line = input().lower()
+            while line != '':
+                text.append(line)
+                line = input().lower()
+            out = [cypher.decrypt(i) for i in text]
+            for i in out:
+                print(i)
+        elif mode == "E":
+            print(cypher.encrypt(input().lower()))
         elif mode == "D":
-            print(cypher.decrypt(text))
+            print(cypher.decrypt(input().lower()))
+

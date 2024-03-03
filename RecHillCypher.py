@@ -1,6 +1,5 @@
 from AlphabetConfig import *
 from Matrix2x2 import Matrix2x2
-from Matrix3x3 import Matrix3x3
 from IntMod import IntMod
 
 
@@ -10,12 +9,10 @@ class RecHillCypher:
         self.__key_2 = Matrix2x2(key_2)
 
     def encrypt(self, x):
-        key_1 = self.__key_1
-        key_2 = self.__key_2
-        keys = [key_1, key_2]
+        keys = [self.__key_1, self.__key_2]
         y = ''
         if len(x) % 2 != 0:
-            x += 'z' * (2 - len(x) % 2)
+            x += '%' * (2 - len(x) % 2)
         for k in range(0, len(x), 2):
             block_x = x[k:k + 2]
             block_x_matrix = Matrix2x2([[IntMod(A_ID[i])] for i in block_x])
@@ -37,7 +34,7 @@ class RecHillCypher:
         keys = [self.__key_1, self.__key_2]
         x = ''
         if len(y) % 2 != 0:
-            y += 'a' * (2 - len(y) % 2)
+            y += '%' * (2 - len(y) % 2)
         for k in range(0, len(y), 2):
             block_y = y[k:k + 2]
             block_y_matrix = Matrix2x2([[IntMod(A_ID[i])] for i in block_y])

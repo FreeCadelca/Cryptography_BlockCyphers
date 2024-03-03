@@ -1,6 +1,5 @@
 from AlphabetConfig import *
 from Matrix2x2 import Matrix2x2
-from Matrix3x3 import Matrix3x3
 from IntMod import IntMod
 
 
@@ -13,7 +12,7 @@ class HillCypher:
             key = self.__key
         y = ''
         if len(x) % 2 != 0:
-            x += 'z' * (2 - len(x) % 2)
+            x += '%' * (2 - len(x) % 2)
         for k in range(0, len(x), 2):
             block_x = x[k:k + 2]
             block_x_matrix = Matrix2x2([[IntMod(A_ID[i])] for i in block_x])
